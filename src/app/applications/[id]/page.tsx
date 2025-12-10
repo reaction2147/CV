@@ -52,17 +52,20 @@ export default async function ApplicationDetailPage({
   if (!hasCvPurchase && searchParams?.session_id && stripe) {
     const session = await stripe.checkout.sessions.retrieve(searchParams.session_id);
     if (session.payment_status === "paid") {
-      await prisma.oneTimePurchase.upsert({
+      const existing = await prisma.oneTimePurchase.findFirst({
         where: { stripePaymentIntentId: session.payment_intent as string },
-        create: {
-          sessionId,
-          applicationId: application.id,
-          type: "CV",
-          amount: session.amount_total ?? 0,
-          stripePaymentIntentId: session.payment_intent as string,
-        },
-        update: {},
       });
+      if (!existing) {
+        await prisma.oneTimePurchase.create({
+          data: {
+            sessionId,
+            applicationId: application.id,
+            type: "CV",
+            amount: session.amount_total ?? 0,
+            stripePaymentIntentId: session.payment_intent as string,
+          },
+        });
+      }
       hasCvPurchase = true;
     }
   }

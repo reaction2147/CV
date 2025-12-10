@@ -10,10 +10,6 @@ const openai =
     ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
     : null;
 
-// Temporary debug log to verify env loading in dev
-// eslint-disable-next-line no-console
-console.log("[ai] OPENAI_API_KEY present:", !!process.env.OPENAI_API_KEY, "model:", process.env.OPENAI_MODEL);
-
 const jobExtractionSchema = z.object({
   cleanedDescription: z.string(),
   roleTitle: z.string().optional(),
