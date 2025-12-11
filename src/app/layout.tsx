@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Analytics/>
+      <SpeedInsights/>
       <body
         className={cn(
           "min-h-screen bg-background text-foreground antialiased font-sans",
